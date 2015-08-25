@@ -16,18 +16,35 @@ const (
 // SignRequest sign a SAML 2.0 AuthnRequest
 // `privateKeyPath` must be a path on the filesystem, xmlsec1 is run out of process
 // through `exec`
-func SignRequest(xml string, privateKeyPath string) (string, error) {
-	return sign(xml, privateKeyPath, xmlRequestID)
+func SignRequest(xml string, privateKey string) (string, error) {
+	return sign(xml, privateKey, xmlRequestID)
 }
 
 // SignResponse sign a SAML 2.0 Response
-// `privateKeyPath` must be a path on the filesystem, xmlsec1 is run out of process
+// `privateKey` will be written to a path on the filesystem, xmlsec1 is run out of process
 // through `exec`
-func SignResponse(xml string, privateKeyPath string) (string, error) {
-	return sign(xml, privateKeyPath, xmlResponseID)
+func SignResponse(xml string, privateKey string) (string, error) {
+	return sign(xml, privateKey, xmlResponseID)
 }
 
-func sign(xml string, privateKeyPath string, id string) (string, error) {
+func sign(xml string, privateKey string, id string) (string, error) {
+	//Create a temporary file for the private key
+	privateKeyFile, err := ioutil.TempFile(os.TempDir(), "tmpgs")
+	if err != nil {
+		return "", err
+	}
+	privateKeyPath := privateKeyFile.Name()
+
+	defer deleteTempFile(privateKeyPath)
+
+	_, err = privateKeyFile.WriteString(privateKey)
+	if err != nil {
+		return "", err
+	}
+	err = privateKeyFile.Close()
+	if err != nil {
+		return "", err
+	}
 
 	samlXmlsecInput, err := ioutil.TempFile(os.TempDir(), "tmpgs")
 	if err != nil {
@@ -64,20 +81,37 @@ func sign(xml string, privateKeyPath string, id string) (string, error) {
 }
 
 // VerifyResponseSignature verify signature of a SAML 2.0 Response document
-// `publicCertPath` must be a path on the filesystem, xmlsec1 is run out of process
+// `publicCert` will be written to a path on the filesystem, xmlsec1 is run out of process
 // through `exec`
-func VerifyResponseSignature(xml string, publicCertPath string) error {
-	return verify(xml, publicCertPath, xmlResponseID)
+func VerifyResponseSignature(xml string, publicCert string) error {
+	return verify(xml, publicCert, xmlResponseID)
 }
 
 // VerifyRequestSignature verify signature of a SAML 2.0 AuthnRequest document
-// `publicCertPath` must be a path on the filesystem, xmlsec1 is run out of process
+// `publicCert` will be written to a path on the filesystem, xmlsec1 is run out of process
 // through `exec`
-func VerifyRequestSignature(xml string, publicCertPath string) error {
-	return verify(xml, publicCertPath, xmlRequestID)
+func VerifyRequestSignature(xml string, publicCert string) error {
+	return verify(xml, publicCert, xmlRequestID)
 }
 
-func verify(xml string, publicCertPath string, id string) error {
+func verify(xml string, publicCert string, id string) error {
+	//Create a temporary file for the public certificate
+	publicCertFile, err := ioutil.TempFile(os.TempDir(), "tmpgs")
+	if err != nil {
+		return nil
+	}
+	publicCertPath := publicCertFile.Name()
+	defer deleteTempFile(publicCertPath)
+
+	_, err = publicCertFile.WriteString(publicCert)
+	if err != nil {
+		return err
+	}
+	err = publicCertFile.Close()
+	if err != nil {
+		return err
+	}
+
 	//Write saml to
 	samlXmlsecInput, err := ioutil.TempFile(os.TempDir(), "tmpgs")
 	if err != nil {
