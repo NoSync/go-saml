@@ -3,6 +3,7 @@ package saml
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 )
 
 func GenerateAuthnRequest(publicCertificate, privateKey, idpSSOUrl, idpSSODescriptorUrl,
@@ -60,7 +61,7 @@ idpSSODescriptorUrl, idpPublicCertificate, assertionConsumerServiceUrl string) (
 	//Create a temporary file for the public certificate
 	publicCertificateFile, err := ioutil.TempFile(os.TempDir(), "publicCertificate")
 	if err != nil {
-		return "", err
+		return err
 	}
 	publicCertificatePath := publicCertificateFile.Name()
 	defer deleteTempFile(publicCertificatePath)
@@ -68,7 +69,7 @@ idpSSODescriptorUrl, idpPublicCertificate, assertionConsumerServiceUrl string) (
 	//Create a temporary file for the private key
 	privateKeyFile, err := ioutil.TempFile(os.TempDir(), "privateKey")
 	if err != nil {
-		return "", err
+		return err
 	}
 	privateKeyPath := privateKeyFile.Name()
 	defer deleteTempFile(privateKeyPath)
@@ -76,7 +77,7 @@ idpSSODescriptorUrl, idpPublicCertificate, assertionConsumerServiceUrl string) (
 	//Create a temporary file for the idp public certificate
 	idpPublicCertificateFile, err := ioutil.TempFile(os.TempDir(), "privateKey")
 	if err != nil {
-		return "", err
+		return  err
 	}
 	idpPublicCertificatePath := idpPublicCertificateFile.Name()
 	defer deleteTempFile(idpPublicCertificatePath)
@@ -91,12 +92,12 @@ idpSSODescriptorUrl, idpPublicCertificate, assertionConsumerServiceUrl string) (
 	}
 	sp.Init()
 	if err != nil {
-		return "", err
+		return err
 	}
 
 	err = response.Validate(&sp)
 	if err != nil {
 		return fmt.Errorf("SAMLResponse validation: "+err.Error())
 	}
-
+	return nil
 }
