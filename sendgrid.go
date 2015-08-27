@@ -16,6 +16,8 @@ idpPublicCertificate, assertionConsumerServiceUrl string) (string, error) {
 	}
 	publicCertificatePath := publicCertificateFile.Name()
 	defer deleteTempFile(publicCertificatePath)
+	publicCertificateFile.WriteString(publicCertificate)
+	publicCertificateFile.Close()
 
 	//Create a temporary file for the private key
 	privateKeyFile, err := ioutil.TempFile(os.TempDir(), "privateKey")
@@ -24,6 +26,8 @@ idpPublicCertificate, assertionConsumerServiceUrl string) (string, error) {
 	}
 	privateKeyPath := privateKeyFile.Name()
 	defer deleteTempFile(privateKeyPath)
+	privateKeyFile.WriteString(privateKey)
+	privateKeyFile.Close()
 
 	//Create a temporary file for the idp public certificate
 	idpPublicCertificateFile, err := ioutil.TempFile(os.TempDir(), "privateKey")
@@ -32,6 +36,8 @@ idpPublicCertificate, assertionConsumerServiceUrl string) (string, error) {
 	}
 	idpPublicCertificatePath := idpPublicCertificateFile.Name()
 	defer deleteTempFile(idpPublicCertificatePath)
+	idpPublicCertificateFile.WriteString(idpPublicCertificate)
+	idpPublicCertificateFile.Close()
 
 	sp := ServiceProviderSettings{
 		PublicCertPath:              publicCertificatePath,
@@ -55,7 +61,7 @@ idpPublicCertificate, assertionConsumerServiceUrl string) (string, error) {
 	return b64XML, nil
 }
 
-func GenerateSamlResponse(response *Response, publicCertificate, privateKey, idpSSOUrl,
+func ValidateSamlResponse(response *Response, publicCertificate, privateKey, idpSSOUrl,
 idpSSODescriptorUrl, idpPublicCertificate, assertionConsumerServiceUrl string) (error) {
 
 	//Create a temporary file for the public certificate
@@ -65,6 +71,8 @@ idpSSODescriptorUrl, idpPublicCertificate, assertionConsumerServiceUrl string) (
 	}
 	publicCertificatePath := publicCertificateFile.Name()
 	defer deleteTempFile(publicCertificatePath)
+	publicCertificateFile.WriteString(publicCertificate)
+	publicCertificateFile.Close()
 
 	//Create a temporary file for the private key
 	privateKeyFile, err := ioutil.TempFile(os.TempDir(), "privateKey")
@@ -73,6 +81,8 @@ idpSSODescriptorUrl, idpPublicCertificate, assertionConsumerServiceUrl string) (
 	}
 	privateKeyPath := privateKeyFile.Name()
 	defer deleteTempFile(privateKeyPath)
+	privateKeyFile.WriteString(privateKey)
+	privateKeyFile.Close()
 
 	//Create a temporary file for the idp public certificate
 	idpPublicCertificateFile, err := ioutil.TempFile(os.TempDir(), "idpPublicCertificate")
@@ -81,6 +91,8 @@ idpSSODescriptorUrl, idpPublicCertificate, assertionConsumerServiceUrl string) (
 	}
 	idpPublicCertificatePath := idpPublicCertificateFile.Name()
 	defer deleteTempFile(idpPublicCertificatePath)
+	idpPublicCertificateFile.WriteString(idpPublicCertificate)
+	idpPublicCertificateFile.Close()
 
 	sp := ServiceProviderSettings{
 		PublicCertPath:              publicCertificatePath,
