@@ -75,7 +75,7 @@ idpSSODescriptorUrl, idpPublicCertificate, assertionConsumerServiceUrl string) (
 	defer deleteTempFile(privateKeyPath)
 
 	//Create a temporary file for the idp public certificate
-	idpPublicCertificateFile, err := ioutil.TempFile(os.TempDir(), "privateKey")
+	idpPublicCertificateFile, err := ioutil.TempFile(os.TempDir(), "idpPublicCertificate")
 	if err != nil {
 		return  err
 	}
