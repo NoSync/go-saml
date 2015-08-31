@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -x
+
+docker run --rm --env="GOPATH=/opt/go/src/github.com/sendgrid/go-saml/Godeps/_workspace:/opt/go" --volume="$PWD:/opt/go/src/github.com/sendgrid/go-saml" --workdir="/opt/go/src/github.com/sendgrid/go-saml" docker.sendgrid.net/sendgrid/dev_go-1.4 bash -c 'yum install -y xmlsec1 xmlsec1-openssl && go test -race'
