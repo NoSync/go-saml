@@ -1,0 +1,37 @@
+{
+	"ImportPath": "github.com/sendgrid/go-saml",
+	"GoVersion": "go1.4.2",
+	"Packages": [
+		"golang.org/x/net/html/atom",
+		"golang.org/x/net/websocket",
+		"golang.org/x/net/html/atom",
+		"golang.org/x/net/websocket",
+		"github.com/kardianos/osext",
+		"github.com/nu7hatch/gouuid",
+		"github.com/stretchr/testify/assert",
+		"golang.org/x/net/html"
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/kardianos/osext",
+			"Rev": "6e7f843663477789fac7c02def0d0909e969b4e5"
+		},
+		{
+			"ImportPath": "github.com/nu7hatch/gouuid",
+			"Rev": "179d4d0c4d8d407a32af483c2354df1d2c91e6c3"
+		},
+		{
+			"ImportPath": "github.com/stretchr/testify/assert",
+			"Comment": "v1.0-17-g089c718",
+			"Rev": "089c7181b8c728499929ff09b62d3fdd8df8adff"
+		},
+		{
+			"ImportPath": "golang.org/x/net/html",
+			"Rev": "66f0418ca41253f8d1a024eb9754e9441a8e79b9"
+		},
+		{
+			"ImportPath": "golang.org/x/net/websocket",
+			"Rev": "66f0418ca41253f8d1a024eb9754e9441a8e79b9"
+		}
+	]
+}

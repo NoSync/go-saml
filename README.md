@@ -19,7 +19,7 @@ The library supports:
 Installation
 ------------
 
-    $ go get github.com/RobotsAndPencils/go-saml
+    $ go get github.com/sendgrid/go-saml
 
 Here's a convenient way to generate a certificate:
 
@@ -191,7 +191,7 @@ b64XML, err := authnResponse.EncodedSignedString("/path/to/private.key")
 
 Would love any contributions you having including better documentation, tests, or more robust functionality.
 
-    git clone git@github.com:RobotsAndPencils/go-saml.git
+    git clone git@github.com:sendgrid/go-saml.git
     make init
     make test
 
