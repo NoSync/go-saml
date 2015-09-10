@@ -30,17 +30,17 @@ func (s *ServiceProviderSettings) Init() (err error) {
 
 	s.publicCert, err = util.LoadCertificate(s.PublicCertPath)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	s.privateKey, err = util.LoadCertificate(s.PrivateKeyPath)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	s.iDPPublicCert, err = util.LoadCertificate(s.IDPPublicCertPath)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	return nil
